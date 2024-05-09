@@ -44,7 +44,7 @@ class Query
 
     public function join($table, $on, $type = '')
     {
-        $this->joins = $this->joins.' '.$type.' JOIN '.$table.' ON '.$on.' ';
+        $this->joins = $this->joins.' '.$type.' JOIN '."`$table`".' ON '.$on.' ';
         return $this;
     }
 
@@ -58,7 +58,7 @@ class Query
                 } else {
                     $where = " AND ";
                 }
-                $where = "$where $key = $value";
+                $where = "$where `$key` = '$value'";
             }
         }
         return $where;
@@ -72,7 +72,7 @@ class Query
                     $select = $select.', ';
                 }
                 if (is_int($key)) {
-                    $select = $select.$value;
+                    $select = $select."$value";
                 } else {
                     $select = "$select$value AS $key";
                 }
@@ -90,11 +90,11 @@ class Query
         $values = null;
         foreach ($insert as $key => $value) {
             if ($fields === null && $values === null) {
-                $fields = $key;
-                $values = $value;
+                $fields = "`$key`";
+                $values = "'$value'";
             } else {
-                $fields = $fields.','.$key;
-                $values = $values.','.$value;
+                $fields = $fields.','."`$key`";
+                $values = $values.','."'$value'";
             }
         }
 
@@ -109,7 +109,7 @@ class Query
             if ($fields !== null) {
                 $fields = "$fields,";
             }
-            $fields = "$fields $key = $value";
+            $fields = "$fields `$key` = '$value'";
         }
         $this->update = $fields;
         return $this;
@@ -119,11 +119,11 @@ class Query
     {
         require_once 'MySQL.php';
         if ($this->insert !== null) {
-            return MySQL::insert('INSERT INTO '.$this->from.$this->insert.$this->stringWhere());
+            return MySQL::insert('INSERT INTO '."`$this->from`".$this->insert.$this->stringWhere());
         } elseif ($this->update) {
             return MySQL::insert('UPDATE '.$this->from.' SET '.$this->update.$this->stringWhere());
         } else {
-            return MySQL::query('SELECT '.$this->stringSelect().' FROM '.$this->from.$this->joins.$this->stringWhere());
+            return MySQL::query('SELECT '.$this->stringSelect().' FROM '."`$this->from`".$this->joins.$this->stringWhere());
         }
     }
 }

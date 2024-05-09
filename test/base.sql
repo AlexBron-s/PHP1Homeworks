@@ -24,3 +24,9 @@ CREATE TABLE IF NOT EXISTS `test`.`product` (
 
 INSERT INTO `test`.`product` (`id`, `img_id`, `title`, `price`, `description`) VALUES ('1', '1', 'test1', '10', 'test test test');
 INSERT INTO `test`.`product` (`id`, `img_id`, `title`, `price`, `description`) VALUES ('2', '2', 'test2', '100', 'testtesttest');
+
+CREATE TABLE `test`.`user` (
+                               `id` INT NOT NULL AUTO_INCREMENT,
+                               `login` VARCHAR(255) NOT NULL,
+                               `password` VARCHAR(255) NOT NULL,
+                               PRIMARY KEY (`id`));

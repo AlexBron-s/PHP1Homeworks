@@ -29,4 +29,9 @@ echo '
 <li><a href="action.php?class_name=Homeworks\Homework6&func_name=Paragraph1" target="_blank" rel="noopener">Задание 1</a></li>
 <li><a href="action.php?class_name=Homeworks\Homework6&func_name=Paragraph4" target="_blank" rel="noopener">Задание 4</a></li>
 </ul>
+<h4>Домашнее задание 7:</h4>
+<ul>
+<li><a href="action.php?class_name=Homeworks\Homework7&func_name=Paragraph1" target="_blank" rel="noopener">Задание 1</a></li>
+<li><a href="action.php?class_name=Homeworks\Homework7&func_name=Paragraph2" target="_blank" rel="noopener">Задание 2</a></li>
+</ul>
 ';
