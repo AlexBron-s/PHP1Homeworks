@@ -38,4 +38,15 @@ class MySQL
         return false;
     }
 
+    public static function del($query, $db = null)
+    {
+        if ($db === null) {
+            $db = self::getDB();
+        }
+        if ($db->query($query)) {
+            return true;
+        }
+        return false;
+    }
+
 }

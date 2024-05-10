@@ -34,4 +34,9 @@ echo '
 <li><a href="action.php?class_name=Homeworks\Homework7&func_name=Paragraph1" target="_blank" rel="noopener">Задание 1</a></li>
 <li><a href="action.php?class_name=Homeworks\Homework7&func_name=Paragraph2" target="_blank" rel="noopener">Задание 2</a></li>
 </ul>
+<h4>Домашнее задание 8 (Требуестся пользователь с ролью admin):</h4>
+<ul>
+<li><a href="action.php?class_name=Homeworks\Homework8&func_name=orders" target="_blank" rel="noopener">Задание 1 и 3</a></li>
+<li><a href="action.php?class_name=Homeworks\Homework8&func_name=productEdit" target="_blank" rel="noopener">Задание 2</a></li>
+</ul>
 ';

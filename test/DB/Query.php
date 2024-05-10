@@ -58,7 +58,7 @@ class Query
                 } else {
                     $where = " AND ";
                 }
-                $where = "$where `$key` = '$value'";
+                $where = "$where $key = '$value'";
             }
         }
         return $where;
@@ -118,12 +118,24 @@ class Query
     public function execute()
     {
         require_once 'MySQL.php';
+        if (!$this->from) {
+            return false;
+        }
         if ($this->insert !== null) {
             return MySQL::insert('INSERT INTO '."`$this->from`".$this->insert.$this->stringWhere());
         } elseif ($this->update) {
-            return MySQL::insert('UPDATE '.$this->from.' SET '.$this->update.$this->stringWhere());
+            return MySQL::insert('UPDATE '."`$this->from`".' SET '.$this->update.$this->stringWhere());
         } else {
             return MySQL::query('SELECT '.$this->stringSelect().' FROM '."`$this->from`".$this->joins.$this->stringWhere());
         }
+    }
+
+    public function delAll()
+    {
+        require_once 'MySQL.php';
+        if ($this->from) {
+            return MySQL::del('DELETE FROM '."`$this->from`".$this->stringWhere());
+        }
+        return false;
     }
 }

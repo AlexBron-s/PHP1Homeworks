@@ -30,12 +30,6 @@ class Homework5
         echo '<p>Популярность: '.$imgs[0]->views.'</p>';
     }
 
-    public function addImg($path, $title)
-    {
-        require_once 'DB\Query.php';
-        return (new Query())->table('img')->insert(['path' => $path, 'title' => $title])->execute();
-    }
-
     public function updateImgAddViews($id)
     {
         require_once 'DB\Query.php';

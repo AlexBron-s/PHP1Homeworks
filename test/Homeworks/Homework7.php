@@ -7,17 +7,32 @@ use DB\Query;
 class Homework7 {
     public function paragraph1($post)
     {
-        if (isset($post['product_id']) && isset($post['operation'])) {
-            $operation = $post['operation'];
-            if ($operation == '+') {
-                $this->addBasket($post['product_id']);
+        $operation = $post['operation'] ?? null;
+
+        if (isset($post['product_id']) && $operation) {
+        if ($operation == '+') {
+            $this->addBasket($post['product_id']);
+        } else {
+            $this->putBasket($post['product_id']);
+        }
+    }
+
+        $this->startSession();
+        $basket = $_SESSION['basket'] ?? [];
+        $user = $_SESSION['user'] ?? null;
+        $sum_all_price = 0;
+        $mes_order = '';
+
+        if ($operation == 'Заказать') {
+            if ($basket) {
+                require_once 'Homeworks\Homework8.php';
+                Homework8::addOrder($user['id'], $basket);
+                $mes_order = 'Заказ принят';
+                $_SESSION['basket'] = [];
             } else {
-                $this->putBasket($post['product_id']);
+                $mes_order = 'Корзина пуста';
             }
         }
-
-        $basket = $this->getBasket();
-        $sum_all_price = 0;
 
         echo "<html>
         <head>
@@ -28,7 +43,7 @@ class Homework7 {
             <table border=\"1\">
             <caption>Корзина</caption>
         <tr>
-            <th>Продукт</th>
+            <th>Изображение</th>
             <th>Название</th>
             <th>Цена за\ед</th>
             <th>Количество</th>
@@ -53,14 +68,28 @@ class Homework7 {
 
         echo "<tr><td></td><td></td><td></td><th>Итого</th><td>$sum_all_price</td><td></td></tr>
             </table>
-            </form>
+            <p>$mes_order</p>
+            <p>
             <form action=\"/action.php\" method=\"post\">
                         <input type=\"hidden\" name=\"class_name\" value=\"Homeworks\Homework7\">
                         <input type=\"hidden\" name=\"func_name\" value=\"shop\">
                         <input type=\"submit\" value=\"Магазин\">
-            </form>
-            </body>
-        </html>";
+            </form>";
+
+        if ($user) {
+            echo " <form action=\"/action.php\" method=\"post\">
+                        <input type=\"hidden\" name=\"class_name\" value=\"Homeworks\Homework7\">
+                        <input type=\"hidden\" name=\"func_name\" value=\"paragraph1\">
+                        <input type=\"submit\" name=\"operation\" value=\"Заказать\">
+                    </form>";
+        } else {
+            echo "<form action=\"/action.php\" method=\"post\">
+                        <input type=\"hidden\" name=\"class_name\" value=\"Homeworks\Homework7\">
+                        <input type=\"hidden\" name=\"func_name\" value=\"paragraph2\">
+                        <input type=\"submit\" value=\"Авторизоваться\">
+            </form>";
+        }
+            echo "</p></body></html>";
     }
 
     public function shop($post)
@@ -93,7 +122,7 @@ class Homework7 {
             <table border=\"1\">
             <caption>Магазин</caption>
         <tr>
-            <th>Продукт</th>
+            <th>Изображение</th>
             <th>Название</th>
             <th>Цена</th>
             <th>Добавить\Удалить</th>
@@ -109,17 +138,12 @@ class Homework7 {
                     </form>
                 </td></tr>";
         }
-        echo "</table></form>
+        echo "</table>
                 <form action=\"/action.php\" method=\"post\">
                         <input type=\"hidden\" name=\"class_name\" value=\"Homeworks\Homework7\">
                         <input type=\"hidden\" name=\"func_name\" value=\"paragraph1\">
                         <input type=\"submit\" value=\"Корзина\">
                 </form></body></html>";
-    }
-    public function getBasket()
-    {
-        $this->startSession();
-        return $_SESSION['basket'] ?? [];
     }
 
     public function addBasket($product_id, $product = null)
@@ -219,13 +243,23 @@ class Homework7 {
                 <input type=\"hidden\" name=\"class_name\" value=\"Homeworks\Homework7\">
                 <input type=\"hidden\" name=\"func_name\" value=\"paragraph2\">
                 <p><input type=\"submit\" name=\"type\" value=\"Выйти из сессии\"></p>
-            </form>";
+            </form>
+            <form action=\"/action.php\" method=\"post\">
+                        <input type=\"hidden\" name=\"class_name\" value=\"Homeworks\Homework7\">
+                        <input type=\"hidden\" name=\"func_name\" value=\"paragraph1\">
+                        <input type=\"submit\" value=\"Корзина\">
+                </form>
+                <form action=\"/action.php\" method=\"post\">
+                        <input type=\"hidden\" name=\"class_name\" value=\"Homeworks\Homework8\">
+                        <input type=\"hidden\" name=\"func_name\" value=\"orders\">
+                        <input type=\"submit\" value=\"Заказы\">
+                </form>";
         }
 
         echo '</body></html>';
     }
 
-    public function register($login, $password)
+    public function register($login, $password, $role = 'user')
     {
         $this->startSession();
         require_once 'DB\Query.php';
@@ -237,10 +271,15 @@ class Homework7 {
         if (!$user) {
             $id = (new Query())
                 ->table('user')
-                ->insert(['login' => $login, 'password' => password_hash($password, PASSWORD_DEFAULT)])
+                ->insert([
+                    'login' => $login,
+                    'password' => password_hash($password, PASSWORD_DEFAULT),
+                    'role' => $role
+                ])
                 ->execute();
             $_SESSION['user']['id'] = $id;
             $_SESSION['user']['login'] = $login;
+            $_SESSION['user']['role'] = $role;
             return 1;
         } else {
             return 0;
@@ -258,6 +297,7 @@ class Homework7 {
         if ($user && password_verify($password, $user[0]->password)) {
             $_SESSION['user']['id'] = $user[0]->id;
             $_SESSION['user']['login'] = $login;
+            $_SESSION['user']['role'] = $user[0]->role;
             return 1;
         } else {
             return 0;

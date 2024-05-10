@@ -30,3 +30,18 @@ CREATE TABLE `test`.`user` (
                                `login` VARCHAR(255) NOT NULL,
                                `password` VARCHAR(255) NOT NULL,
                                PRIMARY KEY (`id`));
+
+CREATE TABLE `test`.`order` (
+                                    `id` INT NOT NULL,
+                                    `user_id` INT NULL,
+                                    `basket` TEXT NULL,
+                                    PRIMARY KEY (`id`));
+
+ALTER TABLE `test`.`user`
+    ADD COLUMN `role` VARCHAR(45) NOT NULL DEFAULT 'user' AFTER `password`;
+
+ALTER TABLE `test`.`order`
+    ADD COLUMN `status` VARCHAR(45) NOT NULL DEFAULT 'Создан' AFTER `basket`,
+CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT ,
+CHANGE COLUMN `user_id` `user_id` INT(11) NOT NULL ,
+CHANGE COLUMN `basket` `basket` TEXT NOT NULL ;
