@@ -109,7 +109,7 @@ class Query
             if ($fields !== null) {
                 $fields = "$fields,";
             }
-            $fields = "$fields `$key` = '$value'";
+            $fields = "$fields `$key` = $value";
         }
         $this->update = $fields;
         return $this;

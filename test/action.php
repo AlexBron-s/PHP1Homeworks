@@ -1,4 +1,8 @@
 <?php
+require_once "vendor/autoload.php";
+spl_autoload_register(function ($class_name) {
+    include $class_name . '.php';
+});
 const DIR = __DIR__.'\\';
 
 if (!empty($_POST)) {

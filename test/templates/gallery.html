@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Галерея</title>
+</head>
+<body>
+    {% for img in imgs %}
+    <a href="{{ img.url }}"><img src="{{ img.path }}" width="240"></a>
+    {% endfor %}
+</body>
+</html>

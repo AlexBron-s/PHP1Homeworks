@@ -1,5 +1,6 @@
 <?php
 echo '
+<h3>PHP курс 1:</h3>
 <h4>Домашнее задание 1:</h4>
 <ul>
 <li><a href="Homeworks\Homework1\dz1.1.php" target="_blank" rel="noopener">Задание 1</a></li>
@@ -38,5 +39,10 @@ echo '
 <ul>
 <li><a href="action.php?class_name=Homeworks\Homework8&func_name=orders" target="_blank" rel="noopener">Задание 1 и 3</a></li>
 <li><a href="action.php?class_name=Homeworks\Homework8&func_name=productEdit" target="_blank" rel="noopener">Задание 2</a></li>
+</ul>
+<h3>PHP курс 2:</h3>
+<h4>Домашнее задание 3:</h4>
+<ul>
+<li><a href="action.php?class_name=Homeworks2\Homeworks3\Gallery&func_name=getGallery" target="_blank" rel="noopener">Задание 1</a></li>
 </ul>
 ';
